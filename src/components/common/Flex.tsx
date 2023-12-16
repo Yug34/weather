@@ -14,7 +14,7 @@ type FlexProps = {
 const Flex = styled.div<FlexProps>`
   display: flex;
   flex-direction: ${(props) => props.flexDirection ?? "row"};
-  width: ${(props) => props.w ?? "10)%"};
+  width: ${(props) => props.w ?? "100%"};
   justify-content: ${(props) => props.justify ?? ''};
   align-items: ${(props) => props.align ?? ''};
   color: ${(props) => props.color || 'inherit'};

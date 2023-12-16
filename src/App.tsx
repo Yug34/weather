@@ -1,62 +1,37 @@
-import {useEffect, useRef} from "react";
-import styled from "styled-components";
+import {useEffect, useRef, useState} from "react";
 import Flex from "./components/common/Flex.tsx";
 import {getAPIString, getAPIStringLongLat} from "./utils";
-import {WeatherResponse} from "./types";
-
-const Layout = styled(Flex)`
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
-`;
-
-const StyledInput = styled.input`
-  width: 100%;
-  background: transparent;
-  border: 1px solid white;
-  padding: 1rem;
-  color: white;
-  font-size: 1rem;
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-const StyledButton = styled.button`
-  width: 120px;
-  background: transparent;
-  border: 1px solid white;
-  border-left: none;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    background: white;
-    color: black;
-  }
-`;
+import { WeatherResponse } from "./types";
+import * as Styles from "./App.Styles.tsx";
+import {WeatherDisplay} from "./components/WeatherDisplay";
 
 const App = () => {
+    // Has any error occurred in the query?
+    const [queryErrorStatus, setQueryErrorStatus] = useState<boolean>(false);
+    const [queryErrorMessage, setQueryErrorMessage] = useState<string | null>(null);
+
+    const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     const submitHandler = async () => {
         const inputValue = inputRef.current!.value;
 
         const res = await fetch(getAPIString(inputValue));
-        const data: WeatherResponse = await res.json();
-        console.log(data);
+        console.log(res);
+        if (res.status !== 200) {
+            const data = await res.json();
+            setQueryErrorStatus(true);
+            setQueryErrorMessage(data.message);
+        } else {
+            const data: WeatherResponse = await res.json();
+            setWeatherData(data);
+        }
     };
 
     const submitForm = (e: KeyboardEvent) => {
         if (e.key === "Enter") {
-            submitHandler();
+            void submitHandler();
         }
     };
 
@@ -71,7 +46,7 @@ const App = () => {
                 const data: WeatherResponse = await res.json();
 
                 input.value = data.name;
-                console.log(data);
+                setWeatherData(data);
             });
         }
 
@@ -79,12 +54,20 @@ const App = () => {
     }, []);
 
     return (
-        <Layout>
-            <Flex>
-                <StyledInput type={"text"} placeholder={"Type location here"} ref={inputRef}/>
-                <StyledButton onClick={submitHandler}>Submit</StyledButton>
-            </Flex>
-        </Layout>
+        <Styles.Layout>
+            <Styles.WeatherContainer>
+                {weatherData && (
+                    <WeatherDisplay weatherData={weatherData} />
+                )}
+                <Flex>
+                    <Styles.StyledInput type={"text"} placeholder={"Type location here"} ref={inputRef}/>
+                    <Styles.StyledButton onClick={submitHandler}>Submit</Styles.StyledButton>
+                </Flex>
+                {queryErrorStatus && (
+                    <Styles.ErrorMessage>{queryErrorMessage}</Styles.ErrorMessage>
+                )}
+            </Styles.WeatherContainer>
+        </Styles.Layout>
     );
 }
 

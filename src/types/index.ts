@@ -18,7 +18,7 @@ export type WindType = {
 }
 
 export type WeatherResponse = {
-    weather: WeatherType;
+    weather: WeatherType[];
     coord: CoordType;
     wind: WindType;
     clouds: { all: number };
@@ -32,6 +32,13 @@ export type WeatherResponse = {
         temp_max: number;
         humidity: number;
         pressure: number;
-    }
+    };
+    sys: {
+        type: number;
+        id: number;
+        country: string;
+        sunrise: number;
+        sunset: number;
+    };
     name: string;
 }
