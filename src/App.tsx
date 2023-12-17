@@ -64,21 +64,26 @@ const App = () => {
         if (localStorage.getItem("weatherData") === null) {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (position) => {
+                    setLoading(true);
                     const res = await fetch(getAPIStringLongLat(position.coords.longitude, position.coords.latitude));
                     const data: WeatherResponse = await res.json();
 
                     input.value = data.name;
                     setWeatherData(data);
+                    setLoading(false);
                 });
             }
         } else {
             // IIFE to update previous weather data stored in localStorage.
             (async () => {
+                setLoading(true);
                 const res = await fetch(getAPIString(JSON.parse(localStorage.getItem("weatherData")!).name));
                 const data: WeatherResponse = await res.json();
                 input.value = data.name;
                 setWeatherData(data);
-            })();
+            })().finally(() => {
+                setLoading(false);
+            });
         }
 
         return () => input.removeEventListener("keydown", submitForm);
@@ -101,7 +106,7 @@ const App = () => {
                     <WeatherDisplay weatherData={weatherData} loading={loading}/>
                 ) : (
                     <Styles.InstructionsContainer>
-                        <Styles.Instructions>Allow the permission, or search for a location!</Styles.Instructions>
+                        <Styles.Instructions>Allow the permission and refresh, or search for a location!</Styles.Instructions>
                         {loading && <LoaderSVG size={"2rem"}/>}
                     </Styles.InstructionsContainer>
                 )}
