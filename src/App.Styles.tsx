@@ -12,6 +12,8 @@ export const WeatherContainer = styled(Flex)`
   align-items: center;
   max-width: 1400px;
   min-height: 100vh;
+  padding: 4rem;
+  row-gap: 4rem;
 `;
 
 export const StyledInput = styled.input`

@@ -10,6 +10,8 @@ const WeatherDisplayContainer = styled(Flex)`
   flex-direction: column;
   align-items: center;
   max-width: 1024px;
+  justify-content: center;
+  height: 100%;
 `;
 
 const WeatherDescription = styled.div`
@@ -29,12 +31,14 @@ const LocationText = styled.div`
 
 const InfoCard = styled(Flex)`
   flex-direction: column;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1rem;
 `;
 
 export const WeatherDisplay = ({weatherData}: WeatherDisplayProps) => {
     return (
         <WeatherDisplayContainer>
-            <Flex flexDirection={"column"}>
+            <Flex $flexDirection={"column"}>
                 <WeatherDescription>{weatherData.weather[0].description}</WeatherDescription>
                 <WeatherRow>
                     <LocationText>in</LocationText>

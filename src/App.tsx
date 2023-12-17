@@ -56,15 +56,15 @@ const App = () => {
     return (
         <Styles.Layout>
             <Styles.WeatherContainer>
-                {weatherData && (
-                    <WeatherDisplay weatherData={weatherData} />
-                )}
                 <Flex>
                     <Styles.StyledInput type={"text"} placeholder={"Type location here"} ref={inputRef}/>
                     <Styles.StyledButton onClick={submitHandler}>Submit</Styles.StyledButton>
                 </Flex>
                 {queryErrorStatus && (
                     <Styles.ErrorMessage>{queryErrorMessage}</Styles.ErrorMessage>
+                )}
+                {weatherData && (
+                    <WeatherDisplay weatherData={weatherData} />
                 )}
             </Styles.WeatherContainer>
         </Styles.Layout>
