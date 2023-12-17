@@ -1,9 +1,12 @@
 import {WeatherResponse} from "../../types";
-import {Arrow, CloudSVG, HumiditySVG, LoaderSVG, WindSVG} from "../../SVGs";
-import {celsiusToFahrenheit, px2vw} from "../../utils";
+import {LoaderSVG} from "../../SVGs";
+import {celsiusToFahrenheit} from "../../utils";
 import {useState} from "react";
 import * as Styles from "./WeatherDisplay.Styles.tsx";
 import WeatherIcon from "../WeatherIcon";
+import thermoC from "../../static/assets/thermometer-celsius.svg";
+import thermoF from "../../static/assets/thermometer-fahrenheit.svg";
+import InfoCards from "./InfoCards";
 
 interface WeatherDisplayProps {
     weatherData: WeatherResponse;
@@ -33,6 +36,10 @@ export const WeatherDisplay = ({weatherData, loading}: WeatherDisplayProps) => {
                 </Styles.WeatherRow>
                 <Styles.WeatherRow>
                     <Styles.WeatherRowTextContainer>
+                        <Styles.ThermoImg
+                            src={isFahrenheit ? thermoF : thermoC}
+                            alt={`Thermometer in ${isFahrenheit ? "Fahrenheit" : "Celsius"}`}
+                        />
                         Temperature is
                         <Styles.TempText>
                             {Math.round(isFahrenheit ? celsiusToFahrenheit(weatherData.main.temp) : weatherData.main.temp)}°{isFahrenheit ? "F" : "C"},
@@ -46,31 +53,7 @@ export const WeatherDisplay = ({weatherData, loading}: WeatherDisplayProps) => {
                 <Styles.DegreeToggler onClick={toggleDegrees}>Switch to °{isFahrenheit ? "C" : "F"}</Styles.DegreeToggler>
             </Styles.MainWeatherContainer>
 
-            <Styles.InfoCardContainer>
-                <Styles.InfoCard>
-                    <WindSVG size={`clamp(3rem, ${px2vw(8 * 16)}, 8rem)`}/>
-                    <Styles.InfoText>
-                        <div>Wind {weatherData.wind.speed} m/s</div>
-                        <div>
-                            {weatherData.wind.deg}°
-                            <Arrow rotation={weatherData.wind.deg}/>
-                        </div>
-                    </Styles.InfoText>
-                </Styles.InfoCard>
-                <Styles.BorderedInfoCard>
-                    <HumiditySVG size={`clamp(3rem, ${px2vw(8 * 16)}, 8rem)`}/>
-                    <Styles.InfoText>
-                        <div>Humidity {weatherData.main.humidity}%</div>
-                    </Styles.InfoText>
-                </Styles.BorderedInfoCard>
-                <Styles.InfoCard>
-                    <CloudSVG size={`clamp(3rem, ${px2vw(8 * 16)}, 8rem)`}/>
-                    <Styles.InfoText>
-                        <div>Cloud cover {weatherData.clouds.all}%</div>
-                        <div>Or {weatherData.clouds.all / 12.5} Okta</div>
-                    </Styles.InfoText>
-                </Styles.InfoCard>
-            </Styles.InfoCardContainer>
+            <InfoCards weatherData={weatherData}/>
 
             {loading && <LoaderSVG size={"2rem"}/>}
         </Styles.WeatherDisplayContainer>

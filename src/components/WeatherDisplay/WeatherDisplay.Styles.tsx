@@ -95,6 +95,16 @@ export const MainWeatherContainer = styled(Flex)`
   row-gap: 1rem;
 `;
 
+export const WeatherImage = styled.img`
+  width: clamp(6rem, ${px2vw(12 * 16)}, 12rem);
+  height: clamp(6rem, ${px2vw(12 * 16)}, 12rem);
+`;
+
+export const ThermoImg = styled.img`
+  width: clamp(1.5rem, ${px2vw(4 * 16)}, 4rem);
+  height: clamp(1.5rem, ${px2vw(4 * 16)}, 4rem);
+`;
+
 export const DegreeToggler = styled(StyledButton)`
   width: 140px;
   border: 1px solid white;
