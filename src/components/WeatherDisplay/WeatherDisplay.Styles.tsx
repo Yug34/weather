@@ -31,6 +31,16 @@ export const WeatherRow = styled(Flex)`
   }
 `;
 
+export const TemperatureRow = styled(Flex)`
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
 export const WeatherRowTextContainer = styled(Flex)`
   width: fit-content;
   align-items: flex-end;
@@ -42,7 +52,7 @@ export const LocationText = styled.div`
   margin-bottom: -6px;
 `;
 
-export const TempText = styled.div`
+export const TemperatureText = styled.div`
   font-size: clamp(1.5rem, ${px2vw(1.75 * 16)}, 1.75rem);
   margin-bottom: -4px;
 `;
@@ -101,8 +111,8 @@ export const WeatherImage = styled.img`
 `;
 
 export const ThermoImg = styled.img`
-  width: clamp(1.5rem, ${px2vw(4 * 16)}, 4rem);
-  height: clamp(1.5rem, ${px2vw(4 * 16)}, 4rem);
+  width: clamp(5rem, ${px2vw(6 * 16)}, 6rem);
+  height: clamp(5rem, ${px2vw(6 * 16)}, 6rem);
 `;
 
 export const DegreeToggler = styled(StyledButton)`

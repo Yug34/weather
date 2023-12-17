@@ -1,12 +1,9 @@
 import {WeatherResponse} from "../../types";
 import {LoaderSVG} from "../../SVGs";
-import {celsiusToFahrenheit} from "../../utils";
-import {useState} from "react";
 import * as Styles from "./WeatherDisplay.Styles.tsx";
 import WeatherIcon from "../WeatherIcon";
-import thermoC from "../../static/assets/thermometer-celsius.svg";
-import thermoF from "../../static/assets/thermometer-fahrenheit.svg";
 import InfoCards from "./InfoCards";
+import Temperature from "./Temperature";
 
 interface WeatherDisplayProps {
     weatherData: WeatherResponse;
@@ -14,12 +11,6 @@ interface WeatherDisplayProps {
 }
 
 export const WeatherDisplay = ({weatherData, loading}: WeatherDisplayProps) => {
-    const [isFahrenheit, setIsFahrenheit] = useState<boolean>(false);
-
-    const toggleDegrees = () => {
-        setIsFahrenheit(!isFahrenheit);
-    }
-
     return (
         <Styles.WeatherDisplayContainer>
             <Styles.MainWeatherContainer>
@@ -34,23 +25,8 @@ export const WeatherDisplay = ({weatherData, loading}: WeatherDisplayProps) => {
                         <div>{weatherData.sys.country}</div>
                     </Styles.WeatherRowTextContainer>
                 </Styles.WeatherRow>
-                <Styles.WeatherRow>
-                    <Styles.WeatherRowTextContainer>
-                        <Styles.ThermoImg
-                            src={isFahrenheit ? thermoF : thermoC}
-                            alt={`Thermometer in ${isFahrenheit ? "Fahrenheit" : "Celsius"}`}
-                        />
-                        Temperature is
-                        <Styles.TempText>
-                            {Math.round(isFahrenheit ? celsiusToFahrenheit(weatherData.main.temp) : weatherData.main.temp)}°{isFahrenheit ? "F" : "C"},
-                        </Styles.TempText>
-                    </Styles.WeatherRowTextContainer>
-                    <Styles.WeatherRowTextContainer>
-                        feels
-                        like <Styles.TempText>{Math.round(isFahrenheit ? celsiusToFahrenheit(weatherData.main.feels_like) : weatherData.main.feels_like)}°{isFahrenheit ? "F" : "C"}.</Styles.TempText>
-                    </Styles.WeatherRowTextContainer>
-                </Styles.WeatherRow>
-                <Styles.DegreeToggler onClick={toggleDegrees}>Switch to °{isFahrenheit ? "C" : "F"}</Styles.DegreeToggler>
+
+                <Temperature weatherData={weatherData}/>
             </Styles.MainWeatherContainer>
 
             <InfoCards weatherData={weatherData}/>
