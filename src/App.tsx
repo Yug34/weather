@@ -5,6 +5,7 @@ import { WeatherResponse } from "./types";
 import * as Styles from "./App.Styles.tsx";
 import {WeatherDisplay} from "./components/WeatherDisplay";
 import {LoaderSVG} from "./SVGs";
+import {StyledButton} from "./components/common/StyledButton.tsx";
 
 const App = () => {
     const [queryErrorStatus, setQueryErrorStatus] = useState<boolean>(false);
@@ -70,10 +71,10 @@ const App = () => {
             <Styles.WeatherContainer>
                 <Flex>
                     <Styles.StyledInput type={"text"} placeholder={"Type location here"} ref={inputRef}/>
-                    <Styles.StyledButton onClick={submitHandler}>
+                    <StyledButton onClick={submitHandler}>
                         {loading && <LoaderSVG/>}
                         Submit
-                    </Styles.StyledButton>
+                    </StyledButton>
                 </Flex>
                 {queryErrorStatus && (
                     <Styles.ErrorMessage>{queryErrorMessage}</Styles.ErrorMessage>

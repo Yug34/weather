@@ -8,3 +8,7 @@ export const getAPIString = (location: string) => {
 export const getAPIStringLongLat = (long: number, lat: number) => {
     return `${import.meta.env.VITE_API_BASE_URL}?lat=${lat}&lon=${long}&limit=1&appid=${import.meta.env.VITE_API_KEY}&units=metric`
 }
+
+export const celciusToFahrenheit = (celcius: number) => {
+    return ((celcius * 9.0 / 5.0) + 32.0);
+}

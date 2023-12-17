@@ -14,6 +14,7 @@ export const WeatherContainer = styled(Flex)`
   max-width: 1400px;
   min-height: 100vh;
   padding: clamp(2rem, ${px2vw(4 * 16)}, 4rem);
+  padding-top: 6rem;
   row-gap: 4rem;
 `;
 
@@ -40,27 +41,6 @@ export const StyledInput = styled.input`
 
   &:focus {
     outline: none;
-  }
-`;
-
-export const StyledButton = styled.button`
-  width: 120px;
-  background: transparent;
-  border: 1px solid white;
-  border-left: none;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  column-gap: 4px;
-
-  &:hover {
-    background: white;
-    color: black;
   }
 `;
 
