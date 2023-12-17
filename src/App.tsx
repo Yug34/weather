@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import Flex from "./components/common/Flex.tsx";
 import {getAPIString, getAPIStringLongLat} from "./utils";
-import { WeatherResponse } from "./types";
+import {WeatherResponse} from "./types";
 import * as Styles from "./App.Styles.tsx";
 import {WeatherDisplay} from "./components/WeatherDisplay";
 import {LoaderSVG} from "./SVGs";
@@ -16,6 +16,13 @@ const App = () => {
 
     const inputRef = useRef<HTMLInputElement>(null);
 
+    useEffect(() => {
+        if (weatherData) {
+            // Insert weatherData into localStorage whenever its updated
+            localStorage.setItem('weatherData', JSON.stringify(weatherData));
+        }
+    }, [weatherData]);
+
     const submitHandler = async () => {
         setQueryErrorStatus(false);
         setLoading(true);
@@ -26,7 +33,7 @@ const App = () => {
 
             if (res.status === 200) {
                 const data: WeatherResponse = await res.json();
-                localStorage.setItem('weatherData', JSON.stringify(data));
+                // localStorage.setItem('weatherData', JSON.stringify(data));
                 setWeatherData(data);
             } else {
                 const data = await res.json();
@@ -53,14 +60,25 @@ const App = () => {
         input.addEventListener("keydown", submitForm);
         input.focus();
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async (position) => {
-                const res = await fetch(getAPIStringLongLat(position.coords.longitude, position.coords.latitude));
-                const data: WeatherResponse = await res.json();
+        // Only get data from user's location if localStorage doesn't already have the weather data.
+        if (localStorage.getItem("weatherData") === null) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (position) => {
+                    const res = await fetch(getAPIStringLongLat(position.coords.longitude, position.coords.latitude));
+                    const data: WeatherResponse = await res.json();
 
+                    input.value = data.name;
+                    setWeatherData(data);
+                });
+            }
+        } else {
+            // IIFE to update previous weather data stored in localStorage.
+            (async () => {
+                const res = await fetch(getAPIString(JSON.parse(localStorage.getItem("weatherData")!).name));
+                const data: WeatherResponse = await res.json();
                 input.value = data.name;
                 setWeatherData(data);
-            });
+            })();
         }
 
         return () => input.removeEventListener("keydown", submitForm);
@@ -80,7 +98,7 @@ const App = () => {
                     <Styles.ErrorMessage>{queryErrorMessage}</Styles.ErrorMessage>
                 )}
                 {weatherData ? (
-                    <WeatherDisplay weatherData={weatherData} loading={loading} />
+                    <WeatherDisplay weatherData={weatherData} loading={loading}/>
                 ) : (
                     <Styles.InstructionsContainer>
                         <Styles.Instructions>Allow the permission, or search for a location!</Styles.Instructions>

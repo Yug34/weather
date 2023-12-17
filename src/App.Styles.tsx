@@ -26,7 +26,7 @@ export const InstructionsContainer = styled(Flex)`
 
 export const Instructions = styled.h2`
   font-weight: 500;
-  font-size: 2rem;
+  font-size: clamp(1.25rem, ${px2vw(2 * 16)}, 2rem);
 `;
 
 export const StyledInput = styled.input`
