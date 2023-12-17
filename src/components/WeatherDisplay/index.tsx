@@ -21,8 +21,9 @@ const WeatherDisplayContainer = styled(Flex)`
 `;
 
 const WeatherDescription = styled.div`
-  font-size: 2rem;
+  font-size: clamp(1.75rem, ${px2vw(2 * 16)}, 2rem);
   text-transform: capitalize;
+  margin-bottom: -6px;
 `;
 
 const WeatherRow = styled(Flex)`
@@ -43,12 +44,12 @@ const WeatherRowTextContainer = styled(Flex)`
 `;
 
 const LocationText = styled.div`
-  font-size: 1rem;
-  margin-bottom: 6px;
+  font-size: clamp(1.75rem, ${px2vw(2 * 16)}, 2rem);
+  margin-bottom: -6px;
 `;
 
 const TempText = styled.div`
-  font-size: 1.75rem;
+  font-size: clamp(1.25rem, ${px2vw(1.75 * 16)}, 1.75rem);
   margin-bottom: -4px;
 `;
 
@@ -98,9 +99,9 @@ export const WeatherDisplay = ({weatherData, loading}: WeatherDisplayProps) => {
                         <WeatherDescription>{weatherData.weather[0].description}</WeatherDescription>
                     </WeatherRowTextContainer>
                     <WeatherRowTextContainer>
-                        <LocationText>in</LocationText>
-                        <div style={{fontSize: "2rem"}}>{weatherData.name},</div>
-                        <LocationText>{weatherData.sys.country}</LocationText>
+                        <div>in</div>
+                        <LocationText>{weatherData.name},</LocationText>
+                        <div>{weatherData.sys.country}</div>
                     </WeatherRowTextContainer>
                 </WeatherRow>
                 <WeatherRow>

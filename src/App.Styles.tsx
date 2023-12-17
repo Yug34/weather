@@ -66,6 +66,6 @@ export const StyledButton = styled.button`
 
 export const ErrorMessage = styled.div`
   margin-top: 1rem;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, ${px2vw(1.5 * 16)}, 1.5rem);
   text-transform: capitalize;
 `;
