@@ -5,15 +5,13 @@ import { WeatherResponse } from "./types";
 import * as Styles from "./App.Styles.tsx";
 import {WeatherDisplay} from "./components/WeatherDisplay";
 import {LoaderSVG} from "./SVGs";
-import {InstructionsContainer} from "./App.Styles.tsx";
 
 const App = () => {
-    // Has any error occurred in the query?
     const [queryErrorStatus, setQueryErrorStatus] = useState<boolean>(false);
     const [queryErrorMessage, setQueryErrorMessage] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
+    const [weatherData, setWeatherData] = useState<WeatherResponse | null>(JSON.parse(localStorage.getItem('weatherData')!) ?? null);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -25,20 +23,21 @@ const App = () => {
             const inputValue = inputRef.current!.value;
             const res = await fetch(getAPIString(inputValue));
 
-            if (res.status !== 200) {
+            if (res.status === 200) {
+                const data: WeatherResponse = await res.json();
+                localStorage.setItem('weatherData', JSON.stringify(data));
+                setWeatherData(data);
+            } else {
                 const data = await res.json();
                 setQueryErrorStatus(true);
                 setQueryErrorMessage(data.message);
-            } else {
-                const data: WeatherResponse = await res.json();
-                setWeatherData(data);
             }
         } catch (error) {
             setQueryErrorStatus(true);
             setQueryErrorMessage("An unknown error occurred");
             console.log(error);
         } finally {
-            setLoading(false); // Reset loading state regardless of success or failure
+            setLoading(false);
         }
     };
 
@@ -80,7 +79,7 @@ const App = () => {
                     <Styles.ErrorMessage>{queryErrorMessage}</Styles.ErrorMessage>
                 )}
                 {weatherData ? (
-                    <WeatherDisplay weatherData={weatherData} />
+                    <WeatherDisplay weatherData={weatherData} loading={loading} />
                 ) : (
                     <Styles.InstructionsContainer>
                         <Styles.Instructions>Allow the permission, or search for a location!</Styles.Instructions>

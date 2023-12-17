@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Flex from "./components/common/Flex.tsx";
+import {px2vw} from "./utils";
 
 export const Layout = styled(Flex)`
   align-items: center;
@@ -12,7 +13,7 @@ export const WeatherContainer = styled(Flex)`
   align-items: center;
   max-width: 1400px;
   min-height: 100vh;
-  padding: 4rem;
+  padding: clamp(2rem, ${px2vw(4 * 16)}, 4rem);
   row-gap: 4rem;
 `;
 
