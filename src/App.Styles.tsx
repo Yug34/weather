@@ -14,8 +14,7 @@ export const WeatherContainer = styled(Flex)`
   max-width: 1400px;
   min-height: 100vh;
   padding: clamp(2rem, ${px2vw(4 * 16)}, 4rem);
-  padding-top: 6rem;
-  row-gap: 4rem;
+  row-gap: 1rem;
 `;
 
 export const InstructionsContainer = styled(Flex)`
