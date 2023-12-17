@@ -49,7 +49,7 @@ const LocationText = styled.div`
 `;
 
 const TempText = styled.div`
-  font-size: clamp(1.25rem, ${px2vw(1.75 * 16)}, 1.75rem);
+  font-size: clamp(1.5rem, ${px2vw(1.75 * 16)}, 1.75rem);
   margin-bottom: -4px;
 `;
 
@@ -106,10 +106,10 @@ export const WeatherDisplay = ({weatherData, loading}: WeatherDisplayProps) => {
                 </WeatherRow>
                 <WeatherRow>
                     <WeatherRowTextContainer>
-                        Temperature is <TempText>{weatherData.main.temp}°C,</TempText>
+                        Temperature is <TempText>{Math.round(weatherData.main.temp)}°C,</TempText>
                     </WeatherRowTextContainer>
                     <WeatherRowTextContainer>
-                        feels like <TempText>{weatherData.main.feels_like}°C.</TempText>
+                        feels like <TempText>{Math.round(weatherData.main.feels_like)}°C.</TempText>
                     </WeatherRowTextContainer>
                 </WeatherRow>
             </MainWeatherContainer>
