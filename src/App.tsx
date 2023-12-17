@@ -4,28 +4,41 @@ import {getAPIString, getAPIStringLongLat} from "./utils";
 import { WeatherResponse } from "./types";
 import * as Styles from "./App.Styles.tsx";
 import {WeatherDisplay} from "./components/WeatherDisplay";
+import {LoaderSVG} from "./SVGs";
+import {InstructionsContainer} from "./App.Styles.tsx";
 
 const App = () => {
     // Has any error occurred in the query?
     const [queryErrorStatus, setQueryErrorStatus] = useState<boolean>(false);
     const [queryErrorMessage, setQueryErrorMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const [weatherData, setWeatherData] = useState<WeatherResponse | null>(null);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
     const submitHandler = async () => {
-        const inputValue = inputRef.current!.value;
+        setQueryErrorStatus(false);
+        setLoading(true);
 
-        const res = await fetch(getAPIString(inputValue));
-        console.log(res);
-        if (res.status !== 200) {
-            const data = await res.json();
+        try {
+            const inputValue = inputRef.current!.value;
+            const res = await fetch(getAPIString(inputValue));
+
+            if (res.status !== 200) {
+                const data = await res.json();
+                setQueryErrorStatus(true);
+                setQueryErrorMessage(data.message);
+            } else {
+                const data: WeatherResponse = await res.json();
+                setWeatherData(data);
+            }
+        } catch (error) {
             setQueryErrorStatus(true);
-            setQueryErrorMessage(data.message);
-        } else {
-            const data: WeatherResponse = await res.json();
-            setWeatherData(data);
+            setQueryErrorMessage("An unknown error occurred");
+            console.log(error);
+        } finally {
+            setLoading(false); // Reset loading state regardless of success or failure
         }
     };
 
@@ -58,13 +71,21 @@ const App = () => {
             <Styles.WeatherContainer>
                 <Flex>
                     <Styles.StyledInput type={"text"} placeholder={"Type location here"} ref={inputRef}/>
-                    <Styles.StyledButton onClick={submitHandler}>Submit</Styles.StyledButton>
+                    <Styles.StyledButton onClick={submitHandler}>
+                        {loading && <LoaderSVG/>}
+                        Submit
+                    </Styles.StyledButton>
                 </Flex>
                 {queryErrorStatus && (
                     <Styles.ErrorMessage>{queryErrorMessage}</Styles.ErrorMessage>
                 )}
-                {weatherData && (
+                {weatherData ? (
                     <WeatherDisplay weatherData={weatherData} />
+                ) : (
+                    <Styles.InstructionsContainer>
+                        <Styles.Instructions>Allow the permission, or search for a location!</Styles.Instructions>
+                        {loading && <LoaderSVG size={"2rem"}/>}
+                    </Styles.InstructionsContainer>
                 )}
             </Styles.WeatherContainer>
         </Styles.Layout>

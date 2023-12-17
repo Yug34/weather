@@ -16,6 +16,17 @@ export const WeatherContainer = styled(Flex)`
   row-gap: 4rem;
 `;
 
+export const InstructionsContainer = styled(Flex)`
+  flex-direction: column;
+  row-gap: 1rem;
+  align-items: center;
+`;
+
+export const Instructions = styled.h2`
+  font-weight: 500;
+  font-size: 2rem;
+`;
+
 export const StyledInput = styled.input`
   width: 100%;
   background: transparent;
@@ -41,6 +52,10 @@ export const StyledButton = styled.button`
   color: white;
   font-size: 1rem;
   cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  column-gap: 4px;
 
   &:hover {
     background: white;
