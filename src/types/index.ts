@@ -1,4 +1,19 @@
-export type AtmosphereType = "Thunderstorm" | "Drizzle" | "Rain" | "Snow" | "Mist" | "Smoke" | "Haze" | "Fog" | "Sand" | "Dust" | "Ash" | "Squall" | "Tornado" | "Clear" | "Clouds";
+export type AtmosphereType =
+    "Thunderstorm"
+    | "Drizzle"
+    | "Rain"
+    | "Snow"
+    | "Mist"
+    | "Smoke"
+    | "Haze"
+    | "Fog"
+    | "Sand"
+    | "Dust"
+    | "Ash"
+    | "Squall"
+    | "Tornado"
+    | "Clear"
+    | "Clouds";
 
 export type WeatherType = {
     description: string;
